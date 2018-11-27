@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Olá, mundo!</title>
+
+	<script src="mascara.min.js"></script>
+    <script>
+
+   
+
+        function verificarCPF(strCpf) {
+            if (!/[0-9]{11}/.test(strCpf)) return false;
+            if (strCpf === "00000000000") return false;
+
+            var soma = 0;
+
+            for (var i = 1; i <= 9; i++) {
+                soma += parseInt(strCpf.substring(i - 1, i)) * (11 - i);
+            }
+
+            var resto = soma % 11;
+
+            if (resto === 10 || resto === 11 || resto < 2) {
+                resto = 0;
+            } else {
+                resto = 11 - resto;
+            }
+
+            if (resto !== parseInt(strCpf.substring(9, 10))) {
+                return false;
+            }
+
+            soma = 0;
+
+            for (var i = 1; i <= 10; i++) {
+                soma += parseInt(strCpf.substring(i - 1, i)) * (12 - i);
+            }
+            resto = soma % 11;
+
+            if (resto === 10 || resto === 11 || resto < 2) {
+                resto = 0;
+            } else {
+                resto = 11 - resto;
+            }
+
+            if (resto !== parseInt(strCpf.substring(10, 11))) {
+                return false;
+            }
+
+            return true;
+        }
+
+        function validarNome() {
+            var strCpf = document.getElementById('cpf').value;
+            if (!verificarCPF(strCpf)) {
+                alert("CPF inválido");
+                return;
+            }
+            document.getElementById('frm').submit();
+        }
+
+
+    </script>
+  </head>
+  <body>
+
+    <div class="container-fluid">
+            
+        <div class="container">
+            <h1>Arms</h1>
+            <form>
+                <div class="form-row align-items-center">
+                    <div class="col-auto">
+                        <label class="sr-only" for="inlineFormInput">Nome</label>
+                        <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Insira seu nome">
+                    </div>                
+                    <div class="col-auto">
+                        <label class="sr-only" for="inlineFormInputGroup">CPF</label>
+                        
+                            <div class="input-group mb-2">
+								<input class="form-control" type="text" title="Digite aqui seu CFP, são apenas 11 números"  id="cpf" placeholder="###.###.###-##" onkeyup="mascara('###.###.###-##',this,event,true)" maxlength="14">
+                                <!--<input type="text" class="form-control" id="cpf" name="cpf" maxlength="14">-->
+                            </div>
+                            </div>
+
+                            <div class="col-auto">
+                            <button type="submit" class="btn btn-primary mb-2"id="btn1" onclick='javascript:validarNome()'>Enviar</button>
+							
+                    </div>                   
+                </div>
+            </form>              
+        </div>
+
+        
+
+    
+
+    </div>
+
+
+    <!-- JavaScript (Opcional) -->
+    <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
