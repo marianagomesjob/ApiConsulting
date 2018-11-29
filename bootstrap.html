@@ -7,100 +7,109 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <title>Olá, mundo!</title>
-
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+	
+	<title>Olá, mundo!</title>
+	
+	
+	<!--JS-->
 	<script src="mascara.min.js"></script>
-    <script>
+	<!-- <script src="main.js"></script> -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	
+	    <script>
 
-   
+        /**
+        @author - evilcoder
+        @description - implements a simple http request to API using axios 
+        @since 27/11/2018
 
-        function verificarCPF(strCpf) {
-            if (!/[0-9]{11}/.test(strCpf)) return false;
-            if (strCpf === "00000000000") return false;
+        **/
+        var call = (let emails, let phones, let name, let doc) => {
 
-            var soma = 0;
+            //faz a requisicao na API
+            var respostaDaRequiscao;
+            axios.get(`https://bigboost.bigdatacorp.com.br/peoplev2?Datasets=basic_data,emails${emails},phones${phones}&q=name${name},doc${doc}&AccessToken=61d50b1c-0e2c-4ae3-a658-32d10996a579`)
+                .then(function (response) {
+                    //resposta se os dadod vieram
+                    respostaDaRequiscao = response.data
+                    console.log(response.data);
+					this.info = respostaDaRequiscao;
+                })
+                .catch(function (error) {
+                    // se não veio naa da API
+                    console.log(error);
+					
+                    alert("has shited and fucked")
+					
+                })
 
-            for (var i = 1; i <= 9; i++) {
-                soma += parseInt(strCpf.substring(i - 1, i)) * (11 - i);
-            }
 
-            var resto = soma % 11;
+            //faz a amostra nos campos onde vai
 
-            if (resto === 10 || resto === 11 || resto < 2) {
-                resto = 0;
-            } else {
-                resto = 11 - resto;
-            }
-
-            if (resto !== parseInt(strCpf.substring(9, 10))) {
-                return false;
-            }
-
-            soma = 0;
-
-            for (var i = 1; i <= 10; i++) {
-                soma += parseInt(strCpf.substring(i - 1, i)) * (12 - i);
-            }
-            resto = soma % 11;
-
-            if (resto === 10 || resto === 11 || resto < 2) {
-                resto = 0;
-            } else {
-                resto = 11 - resto;
-            }
-
-            if (resto !== parseInt(strCpf.substring(10, 11))) {
-                return false;
-            }
-
-            return true;
+            let ondevai =  $document.getElementById("#app")
+            ondevai.append(respostaDaRequiscao.nomeDOCampoQUeVaiAqui) 
         }
-
-        function validarNome() {
-            var strCpf = document.getElementById('cpf').value;
-            if (!verificarCPF(strCpf)) {
-                alert("CPF inválido");
-                return;
-            }
-            document.getElementById('frm').submit();
-        }
-
-
+        
     </script>
+
   </head>
   <body>
+  
+	
 
-    <div class="container-fluid">
-            
-        <div class="container">
-            <h1>Arms</h1>
-            <form>
-                <div class="form-row align-items-center">
-                    <div class="col-auto">
-                        <label class="sr-only" for="inlineFormInput">Nome</label>
-                        <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Insira seu nome">
-                    </div>                
-                    <div class="col-auto">
-                        <label class="sr-only" for="inlineFormInputGroup">CPF</label>
-                        
-                            <div class="input-group mb-2">
-								<input class="form-control" type="text" title="Digite aqui seu CFP, são apenas 11 números"  id="cpf" placeholder="###.###.###-##" onkeyup="mascara('###.###.###-##',this,event,true)" maxlength="14">
-                                <!--<input type="text" class="form-control" id="cpf" name="cpf" maxlength="14">-->
-                            </div>
-                            </div>
+    <div class="container-fluid" id="app">
+		<BR>
+		
+		<div class="card">
+			<div class="card-body">
+						<div class="container">
+			<form>
+				<div class="form-group">
+					<label for="exampleInputEmail1">Nome</label>
+					<input type="text" class="form-control" id="inlineFormInput" aria-describedby="emailHelp"  placeholder="Insira seu nome">
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">CPF</label>
+						<input class="form-control" type="text" title="Digite aqui seu CFP, são apenas 11 números"  id="cpf" placeholder="###.###.###-##" onkeyup="mascara('###.###.###-##',this,event,true)" maxlength="14">
+		
+				</div>
+		
+				<button type="submit" class="btn btn-primary mb-2"id="btn1" onclick='javascript:validarNome()'>Enviar</button>
+				
+			
+						
+			</form> 
+		
+		
+			<br>
+		
+				<table class="table">
+				  <thead class="thead-light">
+					<tr>
+					  <th scope="col">Nome</th>
+					  <th scope="col">CPF</th>
+					  <th scope="col"></th>
 
-                            <div class="col-auto">
-                            <button type="submit" class="btn btn-primary mb-2"id="btn1" onclick='javascript:validarNome()'>Enviar</button>
-							
-                    </div>                   
-                </div>
-            </form>              
-        </div>
+					</tr>
+				  </thead>
+				  <tbody>
+					<tr v-for="user in user">
+					  <th scope="row">@{{name}}</th>
+					  <td>@{{doc}}</td>
+					  <td>Salvar</td>
+					</tr>
 
-        
+				  </tbody>
+				</table>
+		</div>
+			</div>
+		</div>
+	
+		<br>
+		
 
-    
 
     </div>
 
